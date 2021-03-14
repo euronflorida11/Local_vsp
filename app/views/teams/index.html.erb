@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-12 text-center">
+    <i class="fas fa-search fa-3x mt-4 mb-2"></i>
+    <h2 class="text-center bg-gray">チーム一覧</h2>
+    <%= render 'teams/search_team', q: @q, sports: @sports %>
+    <% if @teams.present? %>
+      <% @teams.each do |team| %>
+        <%= render 'teams/team_list', team: team %>
+      <% end %>
+      <%= paginate @teams %>
+    <% else %>
+      <div class="col-12 text-center">
+        <i class="fas fa-exclamation fa-2x mt-4 text-center"></i>
+        <p class="mt-2 text-center">チームがありません。</p>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class ="row">
+  <div class ="col-12  col-offset-4 mt-5 text-center">
+    <table class="table table-hover table-bordered table-condensed table-striped">
+      <thead class="thead_sport">
+        <tr>
+          <th><%= link_to 'ベンチャースポーツリスト', sports_path, class: 'nav-link text-light' %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sports.each do |sport| %>
+          <tr>
+           <td><%= link_to sport.name, sport_path(sport) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+

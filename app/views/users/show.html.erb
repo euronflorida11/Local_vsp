@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col-md-12 text-center">
+    <i class="fas fa-address-card fa-3x mt-4 mb-2"></i>
+    <h2><%= @user.handle_name %>さんのページ</h2>
+    <table class="table">
+      <tbody>
+        <tr>
+           <th><label>プロフィール画像</label></th>
+           <td class="rounded-circle"><%= attachment_image_tag @user, :profile_image, :fill, 60, 60, fallback: "no_image.jpg", size:'100x100' %></td>
+        </tr>
+        <tr>
+          <th><label>ハンドルネーム</label></th>
+          <td><%= @user.handle_name %></td>
+        </tr>
+        <tr>
+          <th><label>自己紹介</label></th>
+          <td><%= @user.introduction %></td>
+        </tr>
+        <tr>
+          <th><label>メールアドレス</label></th>
+          <td><%= @user.email %></td>
+        </tr>
+        <tr>
+          <th><label>フォロー数</label></th>
+          <td>
+            <%= link_to following_path(@user.id) do %>
+              <%= @user.follower.count %>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <th><label>フォロワー数</label></th>
+          <td>
+            <%= link_to follower_path(@user.id) do %>
+              <%= @user.followed.count %>
+            <% end %>
+          </td>
+        </tr>
+      <% unless @user == current_user %>
+        <tr>
+          <th><label>フォロー</label></th>
+          <td id="follow_form_<%= @user.id %>">
+            <%= render 'relationships/follow_form', user: @user %>
+          </td>
+        </tr>
+      <% end %>
+      <% if current_user != @user %>
+        <tr>
+          <th><label>メッセージ</label></th>
+          <td>
+            <%= link_to chat_path(@user.id) do %>
+              <i class="fas fa-envelope fa-2x m-1", data-toggle="tooltip", data-placement="bottom", title="メッセージ"></i>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <% if @user == current_user %>
+        <tr>
+          <th><label></label></th>
+          <td>
+            <%= link_to edit_user_path do %>
+              <i class="fas fa-edit fa-2x m-1", data-toggle="tooltip", data-placement="bottom", title="編集"></i>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<% if @user == current_user %>
+  <div class="row">
+    <div class="col-12 text-center">
+      <i class="fas fa-search fa-3x mt-4 mb-2"></i>
+      <h2 class="text-center bg-gray">ブックマークチーム</h2>
+      <% if @favorite_list.present? %>
+        <% @favorite_list.each do |team| %>
+          <%= render 'teams/team_list', team: team %>
+        <% end %>
+      <% else %>
+        <div class="col-12 text-center">
+          <i class="fas fa-exclamation fa-2x mt-4 text-center"></i>
+          <p class="mt-2 text-center">ブックマークはありません。</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% else %>
+  <% if @team.present? %>
+    <div class="row">
+      <div class="col-12 text-center">
+        <i class="fas fa-search fa-3x mt-4 mb-2"></i>
+        <h2 class="text-center bg-gray"><%= @user.handle_name %>さんのチーム</h2>
+        <% @team.each do |team| %>
+          <%= render 'users/team_list', team: team %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

@@ -1,0 +1,27 @@
+<%= render 'layouts/error_messages', model: @team %>
+<div class="row">
+  <div class="col-12 text-center">
+    <i class="fas fa-plus-circle fa-3x mt-4 mb-2"></i>
+    <h2 class="text-center bg-gray">チーム設立</h2>
+    <%= form_with model: @team, url: teams_path, local:true do |f| %>
+      <div class="font-weight-bold mt-5">チーム画像</div>
+        <%= f.attachment_field :image %>
+      <div class="font-weight-bold mt-5">チーム名</div>
+        <%= f.text_field :name, class: 'form-control' %>
+      <div class="font-weight-bold mt-5">チーム紹介</div>
+        <%= f.text_area :introduction, class: 'form-control' %>
+      <div class="font-weight-bold mt-5">活動人数</div>
+        <%= f.text_field :number, class: 'form-control' %>
+      <div class="font-weight-bold mt-5">活動場所</div>
+        <%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :code, :name, id: "user_prefecture_code", class: 'm-2' %>
+        <%= f.text_field :address, class: 'form-control m-2' %>
+      <div class="font-weight-bold mt-5">活動ステータス</div>
+        <%= f.select :status, [['活動中', "active" ],['休止中', "inactive" ]] %>
+      <div class="font-weight-bold mt-5">ベンチャースポーツ</div>
+        <%= f.collection_select :sport_id, @sports, :id, :name, :include_blank => "  --  選択してください  --  ", class: 'form-control' %>
+      <div class="actions font-weight-bold mt-5">
+        <%= f.submit "チーム設立", class:'btn btn-outline-info text-center' %>
+      </div>
+    <% end %>
+  </div>
+</div>
